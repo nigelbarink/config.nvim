@@ -1,6 +1,8 @@
 return {
         "j-hui/fidget.nvim",
-        config = function()
-            require('fidget').setup({})
-        end
+        opts = {
+            notification = {
+                window = { winblend = 0},
+            },
+        },
     }

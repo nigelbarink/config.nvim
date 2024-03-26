@@ -1,4 +1,4 @@
-return 
+return
     {
         'neovim/nvim-lspconfig',
         dependencies = {
@@ -70,6 +70,26 @@ return
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
             require('lspconfig')['asm_lsp'].setup({
+                capabilities = capabilities
+            })
+
+            require('lspconfig')['zls'].setup({
+                capabilities = capabilities
+            })
+
+            require('lspconfig')['lua_ls'].setup({
+                capabilities = capabilities
+            })
+
+            require('lspconfig')['rust_analyzer'].setup({
+                capabilities = capabilities
+            })
+
+            require('lspconfig')['jdtls'].setup({
+                capabilities = capabilities
+            })
+
+            require('lspconfig')['bashls'].setup({
                 capabilities = capabilities
             })
 
