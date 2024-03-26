@@ -5,6 +5,8 @@ vim.keymap.set('n', '<leader><F8>', vim.cmd.UndotreeToggle)
 vim.keymap.set('n', '<leader>p', [["_dP]])
 vim.keymap.set('n', '<leader>fa', vim.lsp.buf.format)
 vim.keymap.set('n', '<leader>m', ":Mason<CR>")
+vim.keymap.set('n', '<leader>e',':Explore<CR>',  {noremap = false, silent=true})
+vim.keymap.set('n', '<leader>le',':Lexplore<CR>',  {noremap = false, silent=true})
 local osname = vim.loop.os_uname().sysname
 if osname == "Windows_NT" then
     vim.keymap.set('n', '<leader>x', function() print("sorry this is windows!") end)
