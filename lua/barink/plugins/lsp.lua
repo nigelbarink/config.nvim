@@ -31,11 +31,16 @@ return
                     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
                 }),
                 sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip' },
+                    { name = 'path' },
+                    { name = 'nvim_lsp', keyword_length = 1 },
+                    { name = 'luasnip', keyword_length = 3},
                 }, {
-                    { name = 'buffer' },
-                })
+                    { name = 'buffer', keyword_length = 2 },
+                }),
+                window = {
+                    documentation = cmp.config.window.bordered()
+                },
+
             })
 
             -- Set configuration for specific filetype.
@@ -66,6 +71,18 @@ return
                 matching = { disallow_symbol_nonprefix_matching = false }
             })
 
+            local lsp = require("lspconfig")
+            lsp.lua_ls.setup({
+                capabilities = require('cmp_nvim_lsp').default_capabilities(),
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            globals = { 'vim' }
+                        }
+                    }
+                }
+            })
+
             -- Set up lspconfig.
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -74,10 +91,6 @@ return
             })
 
             require('lspconfig')['zls'].setup({
-                capabilities = capabilities
-            })
-
-            require('lspconfig')['lua_ls'].setup({
                 capabilities = capabilities
             })
 
@@ -93,16 +106,5 @@ return
                 capabilities = capabilities
             })
 
-            local lsp = require("lspconfig")
-            lsp.lua_ls.setup({
-                capabilities = require('cmp_nvim_lsp').default_capabilities(),
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { 'vim' }
-                        }
-                    }
-                }
-            })
         end
     }
