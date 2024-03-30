@@ -9,7 +9,11 @@ return
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
             "hrsh7th/nvim-cmp",
-            'L3MON4D3/LuaSnip',
+            {
+                'L3MON4D3/LuaSnip',
+                 dependencies = 'hrsh7th/nvim-cmp',
+                 version = "v2.*",
+            },
             {'mfussenegger/nvim-jdtls', dependencies = {'nvim-dap'}},
         },
         config = function()
@@ -34,7 +38,7 @@ return
                 sources = cmp.config.sources({
                     { name = 'path' },
                     { name = 'nvim_lsp', keyword_length = 1 },
-                    { name = 'luasnip', keyword_length = 3},
+                    { name = 'luasnip', option = { show_autosnippets = true}},
                 }, {
                     { name = 'buffer', keyword_length = 2 },
                 }),
@@ -83,6 +87,23 @@ return
                     }
                 }
             })
+            local ls = require("luasnip")
+            ls.config.set_config({
+                history = true,
+                updateevents = "TextChanged, TextChangedI",
+                enable_autosnippets = true,
+            })
+
+            vim.keymap.set({"i", "s"}, "<C-K>", function() ls.expand() end, {silent = true})
+            vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump(1) end, {silent = true })
+            vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+            vim.keymap.set({"i", "s"}, "<C-E>", function()
+                if ls.choice_active() then
+                    ls.change_choice(1)
+                end
+            end, {silent = true})
+
+            require("luasnip.loaders.from_lua").load({paths= "C:\\Users\\nigel\\AppData\\Local\\nvim\\lua\\snippets"})
 
             -- Set up lspconfig.
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -109,3 +130,4 @@ return
 
         end
     }
+
