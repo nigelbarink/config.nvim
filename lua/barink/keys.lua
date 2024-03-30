@@ -17,9 +17,25 @@ end
 -- Move lines while in visual mode 
 vim.keymap.set('v', '<A-j>', ':m \'>+1<CR>gv=gv', {noremap = true})
 vim.keymap.set('v', '<A-k>', ':m \'<-2<CR>gv=gv', {noremap = true})
+
 -- Move lines while in normal mode 
 vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', {noremap = true})
 vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', {noremap = true})
+
 -- Move line in edit mode 
 vim.keymap.set('i', '<A-j>', ':m .+1<CR>==gi', {noremap = true})
 vim.keymap.set('i', '<A-k>', ':m .-2<CR>==gi', {noremap = true})
+
+-- Diagnostics !
+vim.keymap.set('n', '<C-T>', function() require('trouble').toggle() end )
+vim.keymap.set('n', '<C-D>', function ()  vim.diagnostic.open_float() end )
+vim.keymap.set('n', '<leader>dn', function () vim.diagnostic.goto_next() end )
+vim.keymap.set('n', '<leader>dp', function () vim.diagnostic.goto_prev() end )
+
+-- Debugging
+vim.keymap.set('n', '<leader>sb', function () require('dap').toggle_breakpoint() end )
+vim.keymap.set('n', '<leader>db', function () require('dapui').toggle() end )
+vim.keymap.set('n', '<leader>F5', function () require('dap').continue() end )
+vim.keymap.set('n', '<leader>F6', function () require('dap').step_over() end )
+vim.keymap.set('n', '<leader>F7', function () require('dap').step_into() end )
+
