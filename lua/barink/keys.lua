@@ -35,7 +35,7 @@ vim.keymap.set('n', '<leader>dp', function () vim.diagnostic.goto_prev() end )
 -- Debugging
 vim.keymap.set('n', '<leader>sb', function () require('dap').toggle_breakpoint() end )
 vim.keymap.set('n', '<leader>db', function () require('dapui').toggle() end )
-vim.keymap.set('n', '<leader>F5', function () require('dap').continue() end )
-vim.keymap.set('n', '<leader>F6', function () require('dap').step_over() end )
-vim.keymap.set('n', '<leader>F7', function () require('dap').step_into() end )
+vim.keymap.set('n', '<F5>', function () print("Start debug session" ) require('dap').continue() end )
+vim.keymap.set('n', '<F6>', function () require('dap').step_over() end )
+vim.keymap.set('n', '<F7>', function () require('dap').step_into() end )
 
