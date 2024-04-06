@@ -28,7 +28,7 @@ vim.keymap.set('i', '<A-k>', ':m .-2<CR>==gi', {noremap = true})
 
 -- Diagnostics !
 vim.keymap.set('n', '<C-T>', function() require('trouble').toggle() end )
-vim.keymap.set('n', '<C-D>', function ()  vim.diagnostic.open_float() end )
+vim.keymap.set('n', '<leader>d', function ()  vim.diagnostic.open_float() end )
 vim.keymap.set('n', '<leader>dn', function () vim.diagnostic.goto_next() end )
 vim.keymap.set('n', '<leader>dp', function () vim.diagnostic.goto_prev() end )
 
