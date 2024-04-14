@@ -15,6 +15,12 @@ return
                  version = "v2.*",
             },
             {'mfussenegger/nvim-jdtls', dependencies = {'nvim-dap'}},
+            {
+              "olrtg/nvim-emmet",
+              config = function()
+                vim.keymap.set({ "n", "v" }, '<leader>xe', require('nvim-emmet').wrap_with_abbreviation)
+              end,
+            }
         },
         config = function()
             require("mason").setup()
@@ -77,6 +83,9 @@ return
             })
 
             local lsp = require("lspconfig")
+
+            lsp.emmet_language_server.setup({})
+
             lsp.lua_ls.setup({
                 capabilities = require('cmp_nvim_lsp').default_capabilities(),
                 settings = {
