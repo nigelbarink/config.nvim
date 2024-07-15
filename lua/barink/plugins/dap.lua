@@ -22,6 +22,18 @@ return {
         },
         config = function ()
             local dap = require('dap')
+            dap.configurations.cpp = {
+                {
+                name = "Launch",
+                type= "codelldb",
+                request = "launch",
+                program = function ()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() , 'file')
+                end,
+                cwd = '${workspaceFolder}/Framework',
+                stopOnEntry = false,
+                }
+            }
             dap.configurations.java = {
               {
                 type = 'java';
@@ -60,6 +72,14 @@ return {
                     args = {'dap', '-l', '127.0.0.1:${port}'},
                   }
                 }
+            dap.adapters.codelldb = {
+                type= 'server',
+                port = '${port}',
+                executable = {
+                    command = 'C:/Users/Nigel/Appdata/Local/nvim-data/mason/bin/codelldb.cmd',
+                    args = {"--port", "${port}"}
+                }
+            }
         end
     }
 }

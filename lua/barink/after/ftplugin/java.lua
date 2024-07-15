@@ -1,15 +1,5 @@
---[[
--- Only setup for windows 
--- Don't know if all this is actually necessary
--- TODO: FIX: Clean this mess up ~ 03/28/2024
---]]
-if vim.loop.os_uname().sysname == 'Windows_NT' then
-    Cmd = 'c:/Users/nigel/Appdata/Local/nvim-data/mason/bin/jdtls.cmd'
-    JavaDebug = vim.fn.glob("C:/Users/nigel/AppData/Local/nvim-data/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-0.52.0.jar", 1)
-else
-    Cmd = ''
-    JavaDebug = nil
-end
+Cmd = 'c:/Users/nigel/Appdata/Local/nvim-data/mason/bin/jdtls.cmd'
+JavaDebug = vim.fn.glob("C:/Users/nigel/AppData/Local/nvim-data/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-0.52.0.jar", 1)
 local config = {
     cmd = {Cmd},
     root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),

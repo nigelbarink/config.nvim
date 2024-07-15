@@ -6,15 +6,7 @@ return {
                 {'nvim-lua/plenary.nvim'},
                 {
                     'nvim-telescope/telescope-fzf-native.nvim',
-                    build = function () if os == 'Windows_NT' then
-                        print("You are on Windows, Idiot!!!")
-                       return [[
-                                cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
-                                && cmake --build build --config Release 
-                                && cmake --install build --prefix build
-                                ]]  else
-                        return 'make' end
-                    end,
+                    build ="cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
                 }
             },
             config = function()
