@@ -23,7 +23,7 @@ return {
                         show_help = '?'
                     }
                 },
-                ensure_installed = { "c", "lua", "vim", "vimdoc", "bash" },
+                ensure_installed = { "python", "c", "lua", "vim", "vimdoc", "bash" },
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
