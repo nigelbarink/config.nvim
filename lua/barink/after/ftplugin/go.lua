@@ -1,5 +1,8 @@
+require('lspconfig')['gopls'].setup({
+    capabilities = capabilities
+})
+
 local dap = require("dap")
-print("You opened a Golang file")
 
 dap.adapters.delve = {
   type = 'server',

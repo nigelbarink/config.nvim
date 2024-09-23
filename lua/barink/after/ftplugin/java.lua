@@ -12,3 +12,9 @@ local config = {
 require('jdtls').start_or_attach(config)
 require('jdtls').setup_dap({hotcodreplace='auto'})
 require('jdtls.dap').setup_dap_main_class_configs()
+
+-- Set up lspconfig.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+require('lspconfig')['jdtls'].setup({
+    capabilities = capabilities
+})

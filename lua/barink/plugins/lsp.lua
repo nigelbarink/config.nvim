@@ -40,9 +40,9 @@ return
                     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
                 }),
                 sources = cmp.config.sources({
-                    { name = 'path' },
                     { name = 'nvim_lsp', keyword_length = 1 },
                     { name = 'luasnip', option = { show_autosnippets = true}},
+                    { name = 'path' },
                 }, {
                     { name = 'buffer', keyword_length = 2 },
                 }),
@@ -80,17 +80,6 @@ return
                 matching = { disallow_symbol_nonprefix_matching = false }
             })
 
-            local lsp = require("lspconfig")
-            lsp.lua_ls.setup({
-                capabilities = require('cmp_nvim_lsp').default_capabilities(),
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { 'vim' }
-                        }
-                    }
-                }
-            })
             local ls = require("luasnip")
             ls.config.set_config({
                 history = true,
@@ -112,53 +101,6 @@ return
             -- Set up lspconfig.
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-            require('lspconfig')['asm_lsp'].setup({
-                capabilities = capabilities
-            })
-            local root_files = {
-                'premake5.lua',
-                '.clang-tidy',
-                '.clang-format',
-                'compile_commands',
-                'compile_commands.json',
-                'compile_flags.txt',
-                'configure.ac',
-                '.git'
-            }
-            local util = require('lspconfig.util')
-            require('lspconfig')['clangd'].setup({
-                capabilities = capabilities,
-                filetypes= { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-                cmd = { 'clangd' },
-                single_file_support = true,
-                root_dir = function (fname)
-                    return util.root_pattern(unpack(root_files))(fname)
-                end
-            })
-
-            require('lspconfig')['zls'].setup({
-                capabilities = capabilities
-            })
-
-            require('lspconfig')['rust_analyzer'].setup({
-                capabilities = capabilities
-            })
-
-            require('lspconfig')['jdtls'].setup({
-                capabilities = capabilities
-            })
-
-            require('lspconfig')['bashls'].setup({
-                capabilities = capabilities
-            })
-
-            require('lspconfig')['gopls'].setup({
-                capabilities = capabilities
-            })
-
-            require('lspconfig')['tsserver'].setup({
-                capabilities = capabilities
-            })
         end
     }
 
