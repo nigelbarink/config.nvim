@@ -122,6 +122,7 @@ return
                 },
                 tsserver = true,
                 gopls = true,
+                intelephense = true,
                 lua_ls = {
                     settings = {
                         Lua = {
