@@ -96,14 +96,14 @@ return
                 end
             end, {silent = true})
 
-            require("luasnip.loaders.from_lua").load({paths= "C:\\Users\\nigel\\AppData\\Local\\nvim\\lua\\snippets"})
+            require("luasnip.loaders.from_lua").load({paths= "C:\\Users\\nigel\\AppData\\Local\\nvim\\lua\\barink\\snippets"})
 
 
             -- Set up lspconfig.
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local lsp = require("lspconfig")
 
-            local language_server = { 
+            local language_server = {
                 asm_lsp= true,
                 zls = true,
                 rust_analyzer = true,
@@ -111,28 +111,59 @@ return
                 pylsp = true,
                 clangd = {
                 capabilities = capabilities,
-                root_dir = require('lspconfig').util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"), 
+                root_dir = require('lspconfig').util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
                 cmd = {"clangd"},
                 filetypes = { "c", "cpp", "objc", "objcpp"},
-                settings = { 
-                    clangd = { 
+                settings = {
+                    clangd = {
                         compilationDatabasePath = "compile-commands.json",
                         },
                     }
                 },
                 tsserver = true,
-                gopls = true
+                gopls = true,
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            diagnostics = {
+                                globals = { 'vim'}
+                            }
+                        }
+                    }
+                },
             }
 
             for name, config in pairs(language_server) do
                 if config == true then
                     config = {}
                 end
-                config = vim.tbl_deep_extend("force", {}, {
-                    capabilities = capabilities,
-            }, config)
-            lsp[name].setup({})
+                config = vim.tbl_deep_extend("force", {}, { capabilities = capabilities }, config)
+                lsp[name].setup({})
             end
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function (args)
+                    local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "must have valid client")
 
+                    local settings = language_server[client.name]
+                    if type(settings) ~= "table" then
+                        settings = {}
+                    end
+
+                    local builtin = require "telescope.builtin"
+
+                    vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+                    vim.keymap.set("n", "gd", builtin.lsp_definitions, {buffer = -1})
+                    vim.keymap.set("n", "gr", builtin.lsp_references, {buffer = -1})
+                    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {buffer = -1})
+                    vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = -1})
+                    vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = -1})
+
+                    vim.keymap.set("n", "<LEADER>cr", vim.lsp.buf.rename, {buffer =-1})
+                    vim.keymap.set("n", "<LEADER>ca", vim.lsp.buf.code_action, {buffer = -1})
+                    vim.keymap.set("n", "<LEADER>wd", builtin.lsp_document_symbols, {buffer = -1})
+
+
+                end
+        })
 	end,
 }
