@@ -35,3 +35,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
+--[[
+-- Run zig test on save 
+-- TODO: fix vim.cmd call 
+-- TODO: only do this when a zig test file is open 
+vim.api.nvim_create_autocmd('BufWritePost' , {
+    callback = function ()
+        vim.cmd{cmd = '!zig' , args= {'test', vim.fn.expand('%')} }
+    end
+})]]--
+
+
+

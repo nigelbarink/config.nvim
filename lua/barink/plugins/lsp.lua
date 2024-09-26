@@ -98,9 +98,41 @@ return
 
             require("luasnip.loaders.from_lua").load({paths= "C:\\Users\\nigel\\AppData\\Local\\nvim\\lua\\snippets"})
 
+
             -- Set up lspconfig.
-            local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local lsp = require("lspconfig")
 
-        end
-    }
+            local language_server = { 
+                asm_lsp= true,
+                zls = true,
+                rust_analyzer = true,
+                jdtls = true,
+                pylsp = true,
+                clangd = {
+                capabilities = capabilities,
+                root_dir = require('lspconfig').util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"), 
+                cmd = {"clangd"},
+                filetypes = { "c", "cpp", "objc", "objcpp"},
+                settings = { 
+                    clangd = { 
+                        compilationDatabasePath = "compile-commands.json",
+                        },
+                    }
+                },
+                tsserver = true,
+                gopls = true
+            }
 
+            for name, config in pairs(language_server) do
+                if config == true then
+                    config = {}
+                end
+                config = vim.tbl_deep_extend("force", {}, {
+                    capabilities = capabilities,
+            }, config)
+            lsp[name].setup({})
+            end
+
+	end,
+}

@@ -34,13 +34,40 @@ return {
                 stopOnEntry = false,
                 }
             }
+            dap.adapters.lldb = {
+                type = 'executable',
+                command = "C:\\Program Files\\LLVM\\bin\\lldb-dap.exe",
+                name = 'lldb'
+            }
+
+            -- Zig configuration
+            dap.configurations.zig = {
+                name = 'launch',
+                type= 'lldb',
+                request = 'launch',
+                program = '${workspaceFolder}/zig-out/bin/tests.exe',
+                cwd = '${workspaceFolder}',
+            }
+            -- Java configuration
+            -- See also ftplugin
             dap.configurations.java = {
               {
-                type = 'java';
-                request = 'launch';
-                name = "Launch file";
-                program = "java ${file}";
+                type = 'java',
+                request = 'launch',
+                name = "Launch file",
+                program = "java ${file}",
               }}
+           dap.configurations.cpp = {{
+                name="launch",
+                type="lldb",
+                request="launch",
+                program = function ()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() ..'/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+                args = {},
+            }}
             dap.configurations.go = {
               {
                 type = "delve",
