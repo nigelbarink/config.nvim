@@ -109,6 +109,12 @@ return
                 rust_analyzer = true,
                 jdtls = true,
                 pylsp = true,
+                phpactor = {
+                    init_options = {
+                        ["language_server_phpstan.enabled"] = false,
+                        ["language_server_psalm.enabled"] = false,
+                    }
+                },
                 clangd = {
                 capabilities = capabilities,
                 root_dir = require('lspconfig').util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
@@ -120,7 +126,7 @@ return
                         },
                     }
                 },
-                tsserver = true,
+                ts_ls = true,
                 gopls = true,
                 lua_ls = {
                     settings = {
