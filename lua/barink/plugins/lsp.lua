@@ -106,6 +106,7 @@ return
             local language_server = {
                 asm_lsp= true,
                 zls = true,
+                emmet_language_server = true,
                 rust_analyzer = true,
                 jdtls = true,
                 pylsp = true,
