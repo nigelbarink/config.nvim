@@ -22,13 +22,52 @@ return {
         },
         config = function ()
             local dap = require('dap')
+            dap.configurations.cpp = {
+                {
+                name = "Launch",
+                type= "codelldb",
+                request = "launch",
+                program = function ()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() , 'file')
+                end,
+                cwd = '${workspaceFolder}/Framework',
+                stopOnEntry = false,
+                }
+            }
+            dap.adapters.lldb = {
+                type = 'executable',
+                command = "C:\\Program Files\\LLVM\\bin\\lldb-dap.exe",
+                name = 'lldb'
+            }
+
+            -- Zig configuration
+            dap.configurations.zig = {
+                name = 'launch',
+                type= 'lldb',
+                request = 'launch',
+                program = '${workspaceFolder}/zig-out/bin/tests.exe',
+                cwd = '${workspaceFolder}',
+            }
+            -- Java configuration
+            -- See also ftplugin
             dap.configurations.java = {
               {
-                type = 'java';
-                request = 'launch';
-                name = "Launch file";
-                program = "java ${file}";
+                type = 'java',
+                request = 'launch',
+                name = "Launch file",
+                program = "java ${file}",
               }}
+           dap.configurations.cpp = {{
+                name="launch",
+                type="lldb",
+                request="launch",
+                program = function ()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() ..'/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+                args = {},
+            }}
             dap.configurations.go = {
               {
                 type = "delve",
@@ -60,6 +99,14 @@ return {
                     args = {'dap', '-l', '127.0.0.1:${port}'},
                   }
                 }
+            dap.adapters.codelldb = {
+                type= 'server',
+                port = '${port}',
+                executable = {
+                    command = 'C:/Users/Nigel/Appdata/Local/nvim-data/mason/bin/codelldb.cmd',
+                    args = {"--port", "${port}"}
+                }
+            }
         end
     }
 }
