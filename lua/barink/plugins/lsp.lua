@@ -50,35 +50,35 @@ return
                     documentation = cmp.config.window.bordered()
                 },
 
-		-- Set configuration for specific filetype.
-		cmp.setup.filetype("gitcommit", {
-			sources = cmp.config.sources({
-				{ name = "git" }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
-			}, {
-				{ name = "buffer" },
-			}),
-		})
+            })
 
-		-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-		cmp.setup.cmdline({ "/", "?" }, {
-			mapping = cmp.mapping.preset.cmdline(),
-			sources = {
-				{ name = "buffer" },
-			},
-		})
+            -- Set configuration for specific filetype.
+            cmp.setup.filetype('gitcommit', {
+                sources = cmp.config.sources({
+                    { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+                }, {
+                    { name = 'buffer' },
+                })
+            })
 
-		-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-		cmp.setup.cmdline(":", {
-			mapping = cmp.mapping.preset.cmdline(),
-			sources = cmp.config.sources({
-				{ name = "path" },
-			}, {
-				{ name = "cmdline" },
-			}),
-			matching = { disallow_symbol_nonprefix_matching = false },
-		})
+            -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+            cmp.setup.cmdline({ '/', '?' }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                }
+            })
 
-		local lsp = require("lspconfig")
+            -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    { name = 'cmdline' }
+                }),
+                matching = { disallow_symbol_nonprefix_matching = false }
+            })
 
             local ls = require("luasnip")
             ls.config.set_config({
@@ -87,22 +87,14 @@ return
                 enable_autosnippets = true,
             })
 
-		lsp.lua_ls.setup({
-			capabilities = require("cmp_nvim_lsp").default_capabilities(),
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-				},
-			},
-		})
-		local ls = require("luasnip")
-		ls.config.set_config({
-			history = true,
-			updateevents = "TextChanged, TextChangedI",
-			enable_autosnippets = true,
-		})
+            vim.keymap.set({"i", "s"}, "<C-K>", function() ls.expand() end, {silent = true})
+            vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump(1) end, {silent = true })
+            vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+            vim.keymap.set({"i", "s"}, "<C-E>", function()
+                if ls.choice_active() then
+                    ls.change_choice(1)
+                end
+            end, {silent = true})
 
             require("luasnip.loaders.from_lua").load({paths= "~/.config/nvim/lua/barink/snippets"})
 
@@ -114,6 +106,7 @@ return
             local language_server = {
                 asm_lsp= true,
                 zls = true,
+                kotlin_language_server = true,
                 emmet_language_server = true,
                 rust_analyzer = true,
                 jdtls = true,
@@ -183,3 +176,4 @@ return
         })
 	end,
 }
+
