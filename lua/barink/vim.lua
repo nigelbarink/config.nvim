@@ -25,7 +25,7 @@ vim.g.netrw_browse_split = 0
 vim.g.netrw_winsize = 25
 
 vim.opt.completeopt = {'menu', 'menuone', 'noselect' }
-
+vim.opt.inccommand = 'split'
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function (args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)

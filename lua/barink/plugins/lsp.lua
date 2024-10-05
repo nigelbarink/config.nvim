@@ -19,8 +19,11 @@ return
                  version = "v2.*",
             },
             {'mfussenegger/nvim-jdtls', dependencies = {'nvim-dap'}},
+            "onsails/lspkind.nvim",
         },
         config = function()
+            vim.opt.completeopt = { "menu", "menuone", "noselect", "preview"}
+            require("lspkind").init({})
             require("mason").setup()
             require("mason-lspconfig").setup({
                 ensure_installed = { "lua_ls", "bashls", "rust_analyzer" }
@@ -32,7 +35,16 @@ return
                 enable_autosnippets = true,
             })
             local cmp = require('cmp')
+            local lspkind = require("lspkind") 
             cmp.setup({
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = 'symbol',
+                        maxwidth = 60,
+                        ellipsis_char = '...',
+                        show_labelDetails = true,
+                    }),
+                },
                 snippet = {
                     expand = function(args)
                         require('luasnip').lsp_expand(args.body)
@@ -132,10 +144,21 @@ return
                 gopls = true,
                 intelephense = true,
                 lua_ls = {
-                    settings = {
-                        Lua = {
-                            diagnostics = {
-                                globals = { 'vim'}
+                    config = {
+                        settings = {
+                            Lua = {
+                                runtime = {
+                                    version = 'LuaJIT',
+                                },
+                                workspace = {
+                                    checkThirdParty= false,
+                                    library = {
+                                        vim.env.VIMRUNTIME
+                                    }
+                                },
+--                                diagnostics = {
+--                                  globals = { 'vim'}
+--                              }
                             }
                         }
                     }
