@@ -25,6 +25,12 @@ return
             require("mason-lspconfig").setup({
                 ensure_installed = { "lua_ls", "bashls", "rust_analyzer" }
             })
+            local ls = require("luasnip")
+            ls.config.set_config({
+                history = true,
+                updateevents = "TextChanged, TextChangedI",
+                enable_autosnippets = true,
+            })
             local cmp = require('cmp')
             cmp.setup({
                 snippet = {
@@ -41,7 +47,6 @@ return
                 }),
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp', keyword_length = 1 },
-                    { name = 'luasnip', option = { show_autosnippets = true}},
                     { name = 'path' },
                 }, {
                     { name = 'buffer', keyword_length = 2 },
@@ -61,42 +66,36 @@ return
                 })
             })
 
-            -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-            cmp.setup.cmdline({ '/', '?' }, {
-                mapping = cmp.mapping.preset.cmdline(),
+            cmp.setup.filetype({ "sql"}, {
                 sources = {
-                    { name = 'buffer' }
+                    { name = "vim-dadbod-completion"},
+                    { name = "buffer"} ,
                 }
             })
-
+            -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
             -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
             cmp.setup.cmdline(':', {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({
-                    { name = 'path' }
+                    { name = 'path' },
+                    { name = 'buffer' }
                 }, {
                     { name = 'cmdline' }
                 }),
                 matching = { disallow_symbol_nonprefix_matching = false }
             })
 
-            local ls = require("luasnip")
-            ls.config.set_config({
-                history = true,
-                updateevents = "TextChanged, TextChangedI",
-                enable_autosnippets = true,
-            })
 
             vim.keymap.set({"i", "s"}, "<C-K>", function() ls.expand() end, {silent = true})
-            vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump(1) end, {silent = true })
-            vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+            vim.keymap.set({"i", "s"}, "<C-n>", function() ls.jump(1) end, {silent = true })
+            vim.keymap.set({"i", "s"}, "<C-p>", function() ls.jump(-1) end, {silent = true})
             vim.keymap.set({"i", "s"}, "<C-E>", function()
                 if ls.choice_active() then
                     ls.change_choice(1)
                 end
             end, {silent = true})
 
-            require("luasnip.loaders.from_lua").load({paths= "C:\\Users\\nigel\\AppData\\Local\\nvim\\lua\\barink\\snippets"})
+            require("luasnip.loaders.from_lua").load({paths= "~/.config/nvim/lua/barink/snippets"})
 
 
             -- Set up lspconfig.
@@ -105,9 +104,11 @@ return
 
             local language_server = {
                 asm_lsp= true,
+                mojo = true,
                 zls = true,
                 emmet_language_server = true,
                 rust_analyzer = true,
+                gdtoolkit = { flags = { debounce_text_changes = 150 }},
                 jdtls = true,
                 pylsp = true,
                 phpactor = {

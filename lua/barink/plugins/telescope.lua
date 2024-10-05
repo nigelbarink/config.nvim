@@ -21,7 +21,7 @@ return {
                 vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find)
                 vim.keymap.set('n', '<leader>gw', builtin.grep_string)
                 vim.keymap.set('n', '<leader>fp',function () 
-                    builtin.find_files { cwd = "~/AppData/Local/nvim/lua/barink/"}
+                    builtin.find_files { cwd = "~/.config/nvim/lua/barink/"}
                 end)
             end
         }
