@@ -22,21 +22,38 @@ return {
         },
         config = function ()
             local dap = require('dap')
+            -- Godot Config
+            dap.adapters.godot = {
+                type = "server",
+                host = "127.0.0.1",
+                port = 6006
+            }
+            --dap.configurations.gdscript{
+            --    type = "godot",
+            --    request = "launch",
+            --    name = "launch scene",
+            --    project = "${workspaceFolder}"
+            --}
+            -- C/C++ Config 
             dap.configurations.cpp = {
                 {
                 name = "Launch",
-                type= "codelldb",
+                type= "lldb",
                 request = "launch",
                 program = function ()
                     return vim.fn.input('Path to executable: ', vim.fn.getcwd() , 'file')
                 end,
-                cwd = '${workspaceFolder}/Framework',
                 stopOnEntry = false,
+                runInTerminal = false,
                 }
             }
             dap.adapters.lldb = {
-                type = 'executable',
-                command = "C:\\Program Files\\LLVM\\bin\\lldb-dap.exe",
+                type = 'server',
+                port= "${port}",
+                executable = {
+                    command = "C:\\Users\\nigel\\AppData\\Local\\nvim-data\\mason\\bin\\codelldb.cmd",
+                    args = { "--port", "${port}"}
+                },
                 name = 'lldb'
             }
 
@@ -57,17 +74,7 @@ return {
                 name = "Launch file",
                 program = "java ${file}",
               }}
-           dap.configurations.cpp = {{
-                name="launch",
-                type="lldb",
-                request="launch",
-                program = function ()
-                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() ..'/', 'file')
-                end,
-                cwd = '${workspaceFolder}',
-                stopOnEntry = false,
-                args = {},
-            }}
+            -- Golang config
             dap.configurations.go = {
               {
                 type = "delve",
@@ -99,14 +106,20 @@ return {
                     args = {'dap', '-l', '127.0.0.1:${port}'},
                   }
                 }
-            dap.adapters.codelldb = {
-                type= 'server',
-                port = '${port}',
-                executable = {
-                    command = 'C:/Users/Nigel/Appdata/Local/nvim-data/mason/bin/codelldb.cmd',
-                    args = {"--port", "${port}"}
-                }
-            }
+                local dap = require("dap")
+                local ui = require("dapui")
+                dap.listeners.before.attach.dapui_config = function()
+                    ui.open()
+                end
+                dap.listeners.before.launch.dapui_config = function()
+                    ui.open()
+                end
+                dap.listeners.before.event_terminated.dapui_config = function()
+                    ui.close()
+                end
+                dap.listeners.before.event_exited.dapui_config = function()
+                    ui.close()
+                end
         end
     }
 }
