@@ -9,6 +9,8 @@ return {
         local harpoon = require("harpoon")
         harpoon.setup()
 
+        vim.keymap.set("n", "ha", function() harpoon:list():add() end)
+        vim.keymap.set("n", "hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
         local conf = require("telescope.config").values
         local function toggle_telescope(harpoon_files)
             local file_paths = {}
@@ -25,6 +27,8 @@ return {
 
         vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
         vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+        vim.keymap.set("n", "<leader>fe", function() toggle_telescope(harpoon:list()) end,
+            { desc = "Open harpoon window" })
         vim.keymap.set("n", "<leader>fe", function() toggle_telescope(harpoon:list()) end,
             { desc = "Open harpoon window" })
         vim.keymap.set("n", "C-1", function() harpoon:list():select(1) end)
